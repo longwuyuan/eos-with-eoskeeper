@@ -4,7 +4,7 @@ WORKDIR /
 
 # eoskeeper is a python app and the eos image does not bundle python
 RUN apt-get -y update && \
-    apt-get -y install git python python-pip && \
+    apt-get -y install git python python-pip vim lsof && \
     pip install sh requests && \
     git clone https://github.com/eosstore/eoskeeper.git
 
@@ -15,12 +15,13 @@ ENV ROLE='"F"' BLOCK_PRODUCER_NAME='"eosasia-devops"' EOSIO_LOG_FILE='"/data/eos
 # Crudely install eoskeeper in the absense of a package for now
 RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
     chmod +x /usr/local/bin/eoskeeper.py && \
-    mkdir /etc/eoskeeper && \
+    mkdir /etc/eoskeeper /data && \
+    touch /data/eosio.log && \
     echo '[global]' > /etc/eoskeeper/config.ini && \
     echo ' ' >> /etc/eoskeeper/config.ini && \
     echo 'role = '$ROLE >> /etc/eoskeeper/config.ini && \
     echo 'block_producer_name = '$BLOCK_PRODUCER_NAME >> /etc/eoskeeper/config.ini && \
     echo 'eosio_log_file = '$EOSIO_LOG_FILE >> /etc/eoskeeper/config.ini && \
     echo 'eoskeeper_log_file = '$EOSKEEPER_LOG_FILE >> /etc/eoskeeper/config.ini && \
-    echo 'influxdb_url = '$INFLUXDB_URL >> /etc/eoskeeper/config.ini && \
+    echo 'infulxdb_url = '$INFLUXDB_URL >> /etc/eoskeeper/config.ini && \
     echo 'mobiles = '$MOBILES >> /etc/eoskeeper/config.ini
