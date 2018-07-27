@@ -1,5 +1,5 @@
 # eos-with-eoskeeper
 
-Repo to autobuild EOS with eoskeeper on docker hub
+- Repo to autobuild https://hub.docker.com/r/longwuyuan/eos-with-eoskeeper/
 
-https://hub.docker.com/r/eoscanada/eos/  https://github.com/eosstore/eoskeeper/  and  https://github.com/vchengsong/eoskeeper
+- Uses https://hub.docker.com/r/eoscanada/eos/ and puts https://github.com/eosstore/eoskeeper/  (https://github.com/vchengsong/eoskeeper) inside EOS
