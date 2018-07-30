@@ -12,7 +12,7 @@ ADD conf/* /
 
 # Set env vars to create eoskeeper config file.
 ## TODO - expose these vars for runtime customization
-ENV ROLE='"F"' BLOCK_PRODUCER_NAME='"eosasia-devops"' EOSIO_LOG_FILE='"/data/eosio.log"' EOSKEEPER_LOG_FILE='"/data/eoskeeper.log"' INFLUXDB_URL='"http://eoskeeperdb-influxdb:8086/write?db=eosdb"' MOBILES='"18210500000"'
+ENV ROLE='"F"' BLOCK_PRODUCER_NAME='"eosbp"' EOSIO_LOG_FILE='"/data/eosio.log"' EOSKEEPER_LOG_FILE='"/data/eoskeeper.log"' INFLUXDB_URL='"http://eoskeeperdb-influxdb:8086/write?db=eosdb"' MOBILES='"18210500000"'
 
 # Crudely install eoskeeper in the absense of a package for now
 RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
