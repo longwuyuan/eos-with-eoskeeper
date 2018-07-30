@@ -30,4 +30,4 @@ RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
     mv /supervisor_eos.conf /etc/supervisor/conf.d/ && \
     mv /supervisor_eoskeeper.conf /etc/supervisor/conf.d/
 
-ENTRYPOINT ["/etc/init.d/supervisor" "start"]
+ENTRYPOINT ["/etc/init.d/supervisor", "start"]
