@@ -4,9 +4,11 @@ WORKDIR /
 
 # eoskeeper is a python app and the eos image does not bundle python
 RUN apt-get -y update && \
-    apt-get -y install git python python-pip vim lsof && \
+    apt-get -y install git python python-pip supervisor vim lsof && \
     pip install sh requests && \
     git clone https://github.com/eosstore/eoskeeper.git
+
+ADD conf/* /
 
 # Set env vars to create eoskeeper config file.
 ## TODO - expose these vars for runtime customization
@@ -24,4 +26,9 @@ RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
     echo 'eosio_log_file = '$EOSIO_LOG_FILE >> /etc/eoskeeper/config.ini && \
     echo 'eoskeeper_log_file = '$EOSKEEPER_LOG_FILE >> /etc/eoskeeper/config.ini && \
     echo 'infulxdb_url = '$INFLUXDB_URL >> /etc/eoskeeper/config.ini && \
-    echo 'mobiles = '$MOBILES >> /etc/eoskeeper/config.ini
+    echo 'mobiles = '$MOBILES >> /etc/eoskeeper/config.ini && \
+    chmod +x /start_eos.sh start_eoskeeper.sh && \
+    mv /supervisord_eos.conf /etc/supervisor/conf.d/ && \
+    mv /supervisord_eoskeeper.conf /etc/supervisor/conf.d/
+
+ENTRYPOINT ["/etc/init.d/supervisor" "start"]
