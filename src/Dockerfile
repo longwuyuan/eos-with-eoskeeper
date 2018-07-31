@@ -27,8 +27,9 @@ RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
     echo 'infulxdb_url = '$INFLUXDB_URL >> /etc/eoskeeper/config.ini && \
     echo 'mobiles = '$MOBILES >> /etc/eoskeeper/config.ini && \
     chmod +x /start_eos.sh /start_eoskeeper.sh && \
-    mv /supervisor_eos.conf /etc/supervisor/conf.d/ && \
-    mv /supervisor_eoskeeper.conf /etc/supervisor/conf.d/
+    cat /supervisor_eoskeeper.conf >> /etc/supervisor/supervisord.conf && \
+    cat /supervisor_eos.conf >> /etc/supervisor/supervisord.conf
+
+EXPOSE 8888 9876
 
 ENTRYPOINT ["/etc/init.d/supervisor", "start"]
-#ENTRYPOINT ["/usr/bin/supervisord"," -c", " /etc/supervisor/supervisord.conf"]
