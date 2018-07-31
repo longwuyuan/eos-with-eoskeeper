@@ -11,7 +11,7 @@ RUN apt-get -y update && \
 ADD conf/* /
 
 # Set/Expose env vars to create eoskeeper config file.
-ENV ROLE='' BLOCK_PRODUCER_NAME='' INFLUXDB_URL='' MOBILES=''
+ENV C_ROLE=$ROLE C_BLOCK_PRODUCER_NAME=$BLOCK_PRODUCER_NAME C_INFLUXDB_URL=$INFLUXDB_URL C_MOBILES=$MOBILES
 
 # Crudely install eoskeeper in the absense of a package for now
 RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
@@ -20,16 +20,17 @@ RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
     touch /data/eosio.log && \
     echo '[global]' > /etc/eoskeeper/config.ini && \
     echo ' ' >> /etc/eoskeeper/config.ini && \
-    echo 'role = '$ROLE >> /etc/eoskeeper/config.ini && \
-    echo 'block_producer_name = '$BLOCK_PRODUCER_NAME >> /etc/eoskeeper/config.ini && \
+    echo 'role = '$C_ROLE >> /etc/eoskeeper/config.ini && \
+    echo 'block_producer_name = '$C_BLOCK_PRODUCER_NAME >> /etc/eoskeeper/config.ini && \
     echo 'eosio_log_file = /data/eosio.log' >> /etc/eoskeeper/config.ini && \
     echo 'eoskeeper_log_file = /data/eoskeeper.log' >> /etc/eoskeeper/config.ini && \
-    echo 'infulxdb_url = '$INFLUXDB_URL >> /etc/eoskeeper/config.ini && \
-    echo 'mobiles = '$MOBILES >> /etc/eoskeeper/config.ini && \
-    chmod +x /start_eos.sh /start_eoskeeper.sh && \
-    cat /supervisor_eoskeeper.conf >> /etc/supervisor/supervisord.conf && \
-    cat /supervisor_eos.conf >> /etc/supervisor/supervisord.conf
+    echo 'infulxdb_url = '$C_INFLUXDB_URL >> /etc/eoskeeper/config.ini && \
+    echo 'mobiles = '$C_MOBILES >> /etc/eoskeeper/config.ini && \
+    chmod +x /start_eoskeeper.sh /start_eos.sh /start_eoskeeper_and_eos.sh&& \
+    rm /etc/supervisor/supervisord.conf && \
+    mv /supervisord.conf /etc/supervisor/supervisord.conf
 
 EXPOSE 8888 9876
 
-ENTRYPOINT ["/etc/init.d/supervisor", "start"]
+#ENTRYPOINT ["/etc/init.d/supervisor", "start"]
+CMD ["/start_eoskeeper_and_eos.sh"]
