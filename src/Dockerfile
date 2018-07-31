@@ -11,7 +11,7 @@ RUN apt-get -y update && \
 ADD conf/* /
 
 # Set/Expose env vars to create eoskeeper config file.
-ENV ROLE='"F"' BLOCK_PRODUCER_NAME='"eosbp"' EOSIO_LOG_FILE='"/data/eosio.log"' EOSKEEPER_LOG_FILE='"/data/eoskeeper.log"' INFLUXDB_URL='"http://eoskeeperdb-influxdb:8086/write?db=eosdb"' MOBILES='"18210500000"'
+ENV ROLE='' BLOCK_PRODUCER_NAME='' INFLUXDB_URL='' MOBILES=''
 
 # Crudely install eoskeeper in the absense of a package for now
 RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
@@ -22,8 +22,8 @@ RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
     echo ' ' >> /etc/eoskeeper/config.ini && \
     echo 'role = '$ROLE >> /etc/eoskeeper/config.ini && \
     echo 'block_producer_name = '$BLOCK_PRODUCER_NAME >> /etc/eoskeeper/config.ini && \
-    echo 'eosio_log_file = '$EOSIO_LOG_FILE >> /etc/eoskeeper/config.ini && \
-    echo 'eoskeeper_log_file = '$EOSKEEPER_LOG_FILE >> /etc/eoskeeper/config.ini && \
+    echo 'eosio_log_file = /data/eosio.log' >> /etc/eoskeeper/config.ini && \
+    echo 'eoskeeper_log_file = /data/eoskeeper.log' >> /etc/eoskeeper/config.ini && \
     echo 'infulxdb_url = '$INFLUXDB_URL >> /etc/eoskeeper/config.ini && \
     echo 'mobiles = '$MOBILES >> /etc/eoskeeper/config.ini && \
     chmod +x /start_eos.sh /start_eoskeeper.sh && \
@@ -31,4 +31,4 @@ RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
     mv /supervisor_eoskeeper.conf /etc/supervisor/conf.d/
 
 #ENTRYPOINT ["/etc/init.d/supervisor", "start"]
-ENTRYPOINT ["/start_eos.sh"]
+ENTRYPOINT ["/usr/bin/supervisord"]
