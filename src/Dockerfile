@@ -33,4 +33,4 @@ RUN cp /eoskeeper/eoskeeper.py /usr/local/bin && \
 EXPOSE 8888 9876
 
 #ENTRYPOINT ["/etc/init.d/supervisor", "start"]
-CMD ["/start_eoskeeper_and_eos.sh"]
+CMD ["/start_eos.sh"]
